@@ -121,19 +121,19 @@ SLayout caches certain component references for easy/quick access and also provi
 
 The standard `Animate` method, taking a duration in seconds, an animation action definition action that contains animation property changes, and an optional callback that will be called when the animation finishes.
 
---
+---
 
 #### `public void Animate(float duration, float delay, System.Action animAction, System.Action completeAction = null)`
 
 As above, except this overload of `Animate` also takes a `delay` parameter - a number of seconds to wait before starting the animation.
 
---
+---
 
 #### `public void Animate(float duration, float delay, AnimationCurve customCurve, System.Action animAction, System.Action completeAction = null)`
 
 As above, except this overload of `Animate` can also take an `AnimationCurve` which defines the easing function. The curve should be defined between 0.0 and 1.0 seconds. It can "overshoot" above and below 0.0 and 1.0 on the y axis, although some properties will clamp, such as colors.
 
---
+---
 
 #### `public void AnimateCustom(float duration, System.Action<float> customAnimAction, System.Action completeAction = null)`
 
@@ -150,13 +150,13 @@ The `customAnimAction` method is called every frame, passing a normalised time `
         transform.position = new Vector3(0, 100.0f * t, 0);
     });
     
---
+---
 
 #### `public void AnimateCustom(float duration, float delay, System.Action<float> customAnimAction, System.Action completeAction = null)`
 
 As above, but allows an optional extra `delay` in seconds before beginning the animation.
 
---
+---
 
 #### `public void AddDelay(float extraDelay)`
 
@@ -177,7 +177,7 @@ While an animation is being defined, add a delay (in addition to any existing de
         }
     });
     
---
+---
 
 #### `public void AddDuration(float extraDuration)`
 
@@ -198,7 +198,7 @@ While an animation is being defined, add an extra duration (in addition to the i
     layout.Animate(0.3f, () => layout.x = 100.0f);
     layout.Animate(1.0f, () => layout.height = 150.0f);
     
---
+---
 
 #### `public static void Animatable(Action<float> customAnim)`
 
@@ -220,7 +220,8 @@ Allow a custom value to be animated as part of an animation definition. If an an
         });
     });
     
-    
+---
+
 #### `public static void Animatable(float initial, float target, Action<float> setter)`
 
 Allow a custom float to be animated between an initial value and a target value, as part of an animation definition. If an animation is currently being defined using `Animate`, then it will used the callback every frame that the animation is running, passing the normalised animation time `t`. If no animation is being defined, then it will simplycall the callback immediately, passing `1.0` to ensure that it is set to its final value.
@@ -239,7 +240,8 @@ Allow a custom float to be animated between an initial value and a target value,
         SLayout.Animatable(80.0f, 100.0f, val => _health = val);
     });
     
-    
+---
+
 #### `public static void Animatable(Color initial, Color target, Action<Color> setter)`
 
 Allow a custom color to be animated between an initial value and a target value, as part of an animation definition. If an animation is currently being defined using `Animate`, then it will used the callback every frame that the animation is running, passing the normalised animation time `t`. If no animation is being defined, then it will simplycall the callback immediately, passing `1.0` to ensure that it is set to its final value.
@@ -257,7 +259,9 @@ Allow a custom color to be animated between an initial value and a target value,
         // over 0.5 seconds, as defined by the main animation
         SLayout.Animatable(Color.white, Color.yellow, c => lineRenderer.color = c);
     });
-    
+
+---
+
 #### `public void CancelAnimations()`
 
 End any animations that were defined and active on the given `SLayout`. Note that an `SLayout` may animate the values of another `SLayout`, and these will only be cancelled when `CancelAnimations()` is called on the former, not the latter.
@@ -282,7 +286,8 @@ The properties will be left in their partially animated state. To fully complete
     // animation on either.
     layoutA.CancelAnimations();
     
-    
+---
+
 #### `public void CompleteAnimations()`
 
 Complete any animations that were defined and active on the given `SLayout`, setting them in their final state as defined by the animation. Note that an `SLayout` may animate the values of another `SLayout`, and these will only be completed when `CompleteAnimations()` is called on the former, not the latter.

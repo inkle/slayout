@@ -8,7 +8,7 @@ SLayout is a Unity component that can be added alongside any RectTransform, and 
 
 ## Getting started
 
-The core of SLayout is its set of [root properties](#root-properties) such as `x`, `height` and `color`. Partly, these are simply convenience properties that wrap calls to the RectTransform (and any Text/Image/CanvasGroup) on your object, and use a simplified rect-based [coordinate system](#coordinate-system) that doesn't depend on the RectTransform's anchoring.
+The core of SLayout is its set of [root properties](#root-animatable-properties) such as `x`, `height` and `color`. Partly, these are simply convenience properties that wrap calls to the RectTransform (and any Text/Image/CanvasGroup) on your object, and use a simplified rect-based [coordinate system](#coordinate-system) that doesn't depend on the RectTransform's anchoring.
 
 For example:
 
@@ -35,7 +35,7 @@ As mentioned above, the animation system was inspired by Apple's Core Animation 
 
 For example, you could make your animation call like this:
 
-    layout.Animate(0.5, RefreshLayout);
+    layout.Animate(0.5f, RefreshLayout);
     
 Which calls a standard `RefreshLayout()`, which may sometimes by called without animation (such as in `Start()`), and sometimes with animation as above:
     
@@ -46,6 +46,12 @@ Which calls a standard `RefreshLayout()`, which may sometimes by called without 
     	layout.color = _selected ? Color.yellow : Color.white;
     }
 
+You can also animate the values on another SLayout, such as a child:
+
+    layout.Animate(0.5f, () => {
+        childA.x = 100.0f;
+        childB.color = Color.Red;
+    });
 
 For more examples, see the full [Animation reference](#animation-reference).
 
@@ -138,7 +144,7 @@ The standard `Animate` method.
 
 ---
 
-`oid Animate(float duration, float delay, System.Action animAction, System.Action completeAction = null)`
+`void Animate(float duration, float delay, System.Action animAction, System.Action completeAction = null)`
 
 As above, except this overload of `Animate` also takes a `delay` parameter - a number of seconds to wait before starting the animation.
 

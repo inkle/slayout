@@ -55,7 +55,7 @@ You can also animate the values on another SLayout, such as a child:
 
 For more examples, see the full [Animation reference](#animation-reference).
 
-SLayout's animation system is inspired by Apple's Core Animation, which "instruments" a number of properties from a view, allowing them to be animated when they're changed from within the `Animate` callback. It does  this by snapshotting the initial state of a property right before it's actually changed, and then snapshotting the state when the method that defines the animation is complete. It then automatically lerps (tweens) between them on subsequent frames.
+The animation works by snapshotting the initial state of a property right before it's actually changed, and then snapshotting the state when the method that defines the animation is complete. It then automatically lerps (tweens) between them on subsequent frames.
 
 ## Coordinate system
 

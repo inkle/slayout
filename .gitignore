@@ -8,3 +8,11 @@
 ehthumbs.db
 Thumbs.db
 *_hcm.swatch
+
+# ============ #
+# Unity        #
+# ============ #
+**/Library/*
+**/Temp/*
+**/SLayoutExamples/obj/*
+

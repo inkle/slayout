@@ -627,7 +627,7 @@ public partial class SLayout : UIBehaviour {
 		var worldSpacePoint = rectTransform.TransformPoint(localPos);
 
 		RectTransform targetRectTransform = targetLayout ? targetLayout.rectTransform : null;
-		if( targetRectTransform == null ) targetRectTransform = canvas.GetRectTransform();
+		if( targetRectTransform == null ) targetRectTransform = canvas.transform as RectTransform;
 
 		var targetLocalPos = (Vector2) targetRectTransform.InverseTransformPoint(worldSpacePoint);
 		var targetLayoutPos = targetLocalPos + GetPivotPos(targetRectTransform);

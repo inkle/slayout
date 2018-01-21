@@ -70,29 +70,6 @@ public sealed class SLayoutAnimator : MonoBehaviour
 			anim.CompleteImmediate();
 		}
 	}
-		
-	public void SetCanvasAnimationsPaused(Canvas canvas, bool paused, float delay = 0.0f)
-	{
-		if( delay == 0.0f ) 
-			SetCanvasAnimationsPausedImmediate(canvas, paused);
-		else
-			CoroutineHelper.Delay(() => SetCanvasAnimationsPausedImmediate(canvas, paused), delay);
-	}
-
-	void SetCanvasAnimationsPausedImmediate(Canvas canvas, bool paused)
-	{
-		if( paused )
-			TransferAnimationsWithCanvas(_animations, _pausedAnimations, canvas);
-		else
-			TransferAnimationsWithCanvas(_pausedAnimations, _animations, canvas);
-	}
-
-	void TransferAnimationsWithCanvas(List<SLayoutAnimation> from, List<SLayoutAnimation> to, Canvas canvas)
-	{
-		to.AddRange(from.Filter(a => a.owner.canvas == canvas));
-		from.RemoveAll(a => a.owner.canvas == canvas);
-	}
-
 
 	public static SLayoutAnimator instance {
 		get {
@@ -148,7 +125,6 @@ public sealed class SLayoutAnimator : MonoBehaviour
 
 	List<SLayoutAnimation> _animations = new List<SLayoutAnimation>();
 	List<SLayoutAnimation> _animationsToRemove = new List<SLayoutAnimation>();
-	List<SLayoutAnimation> _pausedAnimations = new List<SLayoutAnimation>();
 
 	public static SLayoutAnimator _instance;
 }

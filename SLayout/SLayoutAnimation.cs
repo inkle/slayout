@@ -155,7 +155,12 @@ public class SLayoutAnimation {
 
 	public void Update() 
 	{
-		_time += Time.unscaledDeltaTime;
+		// Use unscaledDeltaTime so that we don't get affected by slow motion effects
+		// etc, but on the other hand, don't allow it to be a large delta - unscaledDeltaTime
+		// can get the absolutely true/real time between frames, which when the game gets
+		// stalled/paused for some reason can give us unexpected results.
+		float dt = Mathf.Min(Time.unscaledDeltaTime, 1.0f/15.0f);
+		_time += dt;
 
 		if( isComplete )
 			return;

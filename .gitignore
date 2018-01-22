@@ -15,4 +15,4 @@ Thumbs.db
 **/Library/*
 **/Temp/*
 **/SLayoutExamples/obj/*
-
+*.userprefs

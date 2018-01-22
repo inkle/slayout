@@ -56,9 +56,11 @@ You can also animate the values on another SLayout, such as a child:
 
 The animation works by snapshotting the initial state of a property right before it's actually changed, and then snapshotting the state when the method that defines the animation is complete. It then automatically lerps (tweens) between them on subsequent frames.
 
+You can see examples of some of these things, take a look in the [SLayoutExamples project](https://github.com/inkle/slayout/tree/master/SLayoutExamples/SLayoutExamples) - start by taking a look at the **SimpleExamples** scene, with source in SimpleExamples.cs. For a more complex version of the `RefreshLayout` example, read on...
+
 ### A slightly more complex example
 
-This example is in the [SLayoutExamples project](https://github.com/inkle/slayout/tree/master/SLayoutExamples/SLayoutExamples) and is demonstrated in the gif:
+Also in the [SLayoutExamples project](https://github.com/inkle/slayout/tree/master/SLayoutExamples/SLayoutExamples) is the ParagraphAnimatorExample, as shown in the gif:
 
 ![](https://github.com/inkle/slayout/blob/master/slayout.gif)
 

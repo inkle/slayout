@@ -40,11 +40,15 @@ public class ParagraphAnimatorExample : MonoBehaviour {
 		LayoutWords(Color.clear, offset:250, rotation:-5);
 
 		// Animate into position with a new paragraph width
-		_layout.Animate(0.5f, () => LayoutWords(Color.black, offset:150, rotation:0), completeAction:() => {
-
-			// Animate out again in completion callback after a 2 second pause
-			_layout.Animate(0.5f, 2.0f, () => LayoutWords(Color.clear, offset:50, rotation:+5));
-		});
+		_layout.Animate(0.5f, () => LayoutWords(Color.black, offset:150, rotation:0), 
+			completeAction:() => {
+				
+				// Animate out again in completion callback after a 2 second pause
+				_layout.Animate(0.5f, 2.0f, () => 
+					LayoutWords(Color.clear, offset:50, rotation:+5)
+				);
+			}
+		);
 
 		// Repeat the whole sequence again
 		_layout.After(6.0f, Animate);
@@ -60,6 +64,7 @@ public class ParagraphAnimatorExample : MonoBehaviour {
 			var nextX = x;
 			var nextY = y;
 
+			// Word wrap when we exceed our line length
 			if( nextX + wordLayout.width > lineWidth ) {
 				nextX = margin;
 				nextY += lineHeight;

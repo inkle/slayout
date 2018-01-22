@@ -5,6 +5,7 @@ SLayout is a Unity component that can be added alongside any RectTransform, and 
 * **Easier, more convenient layout properties:** using a consistent coordinate system that works independently from a RectTransform’s anchoring, you can use properties like `x` to always refer to the distance from the parent rect’s left edge to the given rect’s edge (a bit like Unity’s IMGUI).
 * **Animation:** a system inspired by iOS’s Core Animation allows easy animation/tweening when using the above properties.
 
+![](https://github.com/inkle/slayout/blob/master/slayout.gif)
 
 ## Getting started
 
@@ -53,9 +54,69 @@ You can also animate the values on another SLayout, such as a child:
         childB.color = Color.Red;
     });
 
-For more examples, see the full [Animation reference](#animation-reference).
-
 The animation works by snapshotting the initial state of a property right before it's actually changed, and then snapshotting the state when the method that defines the animation is complete. It then automatically lerps (tweens) between them on subsequent frames.
+
+### A slightly more complex example
+
+This example is in the [SLayoutExamples project](https://github.com/inkle/slayout/tree/master/SLayoutExamples/SLayoutExamples) and is demonstrated in the gif:
+
+![](https://github.com/inkle/slayout/blob/master/slayout.gif)
+
+We define the static layout function which positions all the individual word view using word wrapping. It takes 3 parameters which define how we're going to animate the individual words:
+
+	void LayoutWords(Color color, float offset, float rotation)
+	{
+		float x = margin;
+		float y = margin;
+
+		foreach(var wordLayout in _wordLayouts) {
+
+			var nextX = x;
+			var nextY = y;
+
+			// Word wrap when we exceed our line length
+			if( nextX + wordLayout.width > lineWidth ) {
+				nextX = margin;
+				nextY += lineHeight;
+			}
+
+			wordLayout.x = nextX + offset;
+			wordLayout.y = nextY;
+			wordLayout.color = color;
+			wordLayout.rotation = rotation;
+
+			x = nextX + wordLayout.width + spaceWidth;
+			y = nextY;
+
+			// Delay before next word animates in
+			// (When not animating, this does nothing)
+			_layout.AddDelay(0.05f);
+		}
+	}
+	
+Then, here's the setup to create the looping animation, which is initially kicked off from the `Start()` method:
+
+	void Animate() {
+
+		// Static, non-animated layout
+		LayoutWords(Color.clear, offset:250, rotation:-5);
+
+		// Animate into position with a new paragraph width
+		_layout.Animate(0.5f, () => LayoutWords(Color.black, offset:150, rotation:0), 
+			completeAction:() => {
+			
+				// Animate out again in completion callback after a 2 second pause
+				_layout.Animate(0.5f, 2.0f, () => 
+					LayoutWords(Color.clear, offset:50, rotation:+5)
+				);
+			}
+		);
+
+		// Repeat the whole sequence again
+		_layout.After(6.0f, Animate);
+	}
+
+For a few more examples, take a look in the full [Animation reference](#animation-reference).
 
 ## Coordinate system
 

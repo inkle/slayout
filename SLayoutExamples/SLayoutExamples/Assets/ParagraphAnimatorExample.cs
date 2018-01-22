@@ -12,6 +12,7 @@ public class ParagraphAnimatorExample : MonoBehaviour {
 	const float spaceWidth = 10.0f;
 	const float margin = 20;
 	const float lineHeight = 50;
+	const float lineWidth = 500;
 
 	void Start() {
 		_layout = GetComponent<SLayout>();
@@ -32,34 +33,24 @@ public class ParagraphAnimatorExample : MonoBehaviour {
 			return wordLayout;
 		}).ToArray();
 	}
-
+		
 	void Animate() {
 
 		// Static, non-animated layout
-		LayoutWords(paragraphWidth:200.0f, color:Color.clear);
+		LayoutWords(Color.clear, offset:250, rotation:-5);
 
 		// Animate into position with a new paragraph width
-		_layout.Animate(1.0f, 1.0f, () => {
-			LayoutWords(paragraphWidth:500.0f, color:Color.black);
-		}, () => {
+		_layout.Animate(0.5f, () => LayoutWords(Color.black, offset:150, rotation:0), completeAction:() => {
 
-			// Drift away and fade out
-			_layout.Animate(1.0f, 1.0f, () => {
-				for(int i=_wordLayouts.Length-1; i>=0; i--) {
-					var wordLayout = _wordLayouts[i];
-					wordLayout.alpha = 0.0f;
-					wordLayout.x = 1.2f * wordLayout.x + 50.0f;
-					wordLayout.rotation = -5.0f;
-					_layout.AddDelay(0.05f);
-				}
-			});
+			// Animate out again in completion callback after a 2 second pause
+			_layout.Animate(0.5f, 2.0f, () => LayoutWords(Color.clear, offset:50, rotation:+5));
 		});
 
 		// Repeat the whole sequence again
-		_layout.After(8.0f, Animate);
+		_layout.After(6.0f, Animate);
 	}
 
-	void LayoutWords(float paragraphWidth, Color color)
+	void LayoutWords(Color color, float offset, float rotation)
 	{
 		float x = margin;
 		float y = margin;
@@ -69,15 +60,15 @@ public class ParagraphAnimatorExample : MonoBehaviour {
 			var nextX = x;
 			var nextY = y;
 
-			if( nextX + wordLayout.width > paragraphWidth ) {
+			if( nextX + wordLayout.width > lineWidth ) {
 				nextX = margin;
 				nextY += lineHeight;
 			}
 
-			wordLayout.x = nextX;
+			wordLayout.x = nextX + offset;
 			wordLayout.y = nextY;
 			wordLayout.color = color;
-			wordLayout.rotation = 0;
+			wordLayout.rotation = rotation;
 
 			x = nextX + wordLayout.width + spaceWidth;
 			y = nextY;

@@ -22,8 +22,7 @@ public class SLayoutAnimation {
 		_customCurve = customCurve;
 		_owner = owner;
 
-		bool instant = delay + duration <= 0.0f;
-
+		// animAction == null when using the After method, for example
 		if( animAction != null ) {
 			_properties = new List<SAnimatedProperty>();
 
@@ -31,7 +30,7 @@ public class SLayoutAnimation {
 
 			// Rewind animation back to beginning
 			// But only if our duration > 0
-			if( !instant ) {
+			if( !isInstant ) {
 				foreach(var property in _properties)
 					property.Start();
 			}
@@ -39,7 +38,7 @@ public class SLayoutAnimation {
 		}
 
 		// Duration = zero? Done already
-		if( instant ) Done();
+		if( isInstant ) Done();
 
 		_animationsBeingDefined.RemoveAt(_animationsBeingDefined.Count-1);
 	}
@@ -142,6 +141,15 @@ public class SLayoutAnimation {
 	bool timeIsUp {
 		get {
 			return _time >= _maxDelay + _maxDuration;
+		}
+	}
+		
+	bool isInstant {
+		get {
+			// Delay and duration may vary over the course of the animation definition,
+			// so we use the maxDelay/maxDuration to detect if there has *ever* been
+			// any length at all to the "animation".
+			return _maxDelay == 0.0f && _maxDuration == 0.0f;
 		}
 	}
 

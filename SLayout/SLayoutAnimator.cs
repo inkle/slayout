@@ -98,8 +98,16 @@ public sealed class SLayoutAnimator : MonoBehaviour
 		if( _animations.Count > 0 ) {
 
 			// Don't foreach, since a new animation could be added to the list
-			// as part of the Update (due to a completion callback)
-			for(int i=0; i<_animations.Count; ++i) {
+			// as part of the Update (due to a completion callback).
+			// Since an animation's completion callback may recursively create
+			// a new animation, don't allow accidental infinite loops.
+			// (Fix for bug where a large unscaled timestep may cause an
+			//  infinite loop even when duration > 0, eek! Happens when 
+			//  task switching - the unscaled timestep becomes the amount of
+			//  time you spent between applications, ouch. May still be a 
+			//  problem anyway when duration < a normal timestep but > 0.)
+			int initialCount = _animations.Count;
+			for(int i=0; i<Mathf.Min(_animations.Count, initialCount); ++i) {
 				var anim = _animations[i];
 
 				// If owner object has been deleted, stop the animation

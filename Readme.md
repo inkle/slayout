@@ -26,8 +26,8 @@ However, using these properties consistently (instead of direct calls to the Rec
     
     // Animate x to 100px, height to 50px, easing with a duration 0.5 seconds
     layout.Animate(0.5f, () => {
-    	layout.x = 100.0f;
-    	layout.height = 50.0f;
+        layout.x = 100.0f;
+        layout.height = 50.0f;
     });
 
 There are a number of advantages to this technique. You don't have to learn a new syntax to an Animate method - you simply provide a duration and then in the animation method set the properties using the same code that you would use if you weren't animating. It also allows you to re-use code that you use to lay out views dynamically, even if the method does other things besides simply setting properties. You can even include loops in your animation code, positioning a set of views in one single `Animate` call.
@@ -42,9 +42,9 @@ Which calls a standard `RefreshLayout()`, which may sometimes by called without 
     
     void RefreshLayout()
     {
-    	layout.width = layout.parentWidth;
-    	layout.height = 0.25f * layout.parentHeight;
-    	layout.color = _selected ? Color.yellow : Color.white;
+        layout.width = layout.parentWidth;
+        layout.height = 0.25f * layout.parentHeight;
+        layout.color = _selected ? Color.yellow : Color.white;
     }
 
 You can also animate the values on another SLayout, such as a child:
@@ -64,57 +64,57 @@ This example is in the [SLayoutExamples project](https://github.com/inkle/slayou
 
 We define the static layout function which positions all the individual word view using word wrapping. It takes 3 parameters which define how we're going to animate the individual words:
 
-	void LayoutWords(Color color, float offset, float rotation)
-	{
-		float x = margin;
-		float y = margin;
+    void LayoutWords(Color color, float offset, float rotation)
+    {
+        float x = margin;
+        float y = margin;
 
-		foreach(var wordLayout in _wordLayouts) {
+        foreach(var wordLayout in _wordLayouts) {
 
-			var nextX = x;
-			var nextY = y;
+            var nextX = x;
+            var nextY = y;
 
-			// Word wrap when we exceed our line length
-			if( nextX + wordLayout.width > lineWidth ) {
-				nextX = margin;
-				nextY += lineHeight;
-			}
+            // Word wrap when we exceed our line length
+            if( nextX + wordLayout.width > lineWidth ) {
+                nextX = margin;
+                nextY += lineHeight;
+            }
 
-			wordLayout.x = nextX + offset;
-			wordLayout.y = nextY;
-			wordLayout.color = color;
-			wordLayout.rotation = rotation;
+            wordLayout.x = nextX + offset;
+            wordLayout.y = nextY;
+            wordLayout.color = color;
+            wordLayout.rotation = rotation;
 
-			x = nextX + wordLayout.width + spaceWidth;
-			y = nextY;
+            x = nextX + wordLayout.width + spaceWidth;
+            y = nextY;
 
-			// Delay before next word animates in
-			// (When not animating, this does nothing)
-			_layout.AddDelay(0.05f);
-		}
-	}
-	
+            // Delay before next word animates in
+            // (When not animating, this does nothing)
+            _layout.AddDelay(0.05f);
+        }
+    }
+    
 Then, here's the setup to create the looping animation, which is initially kicked off from the `Start()` method:
 
-	void Animate() {
+    void Animate() {
 
-		// Static, non-animated layout
-		LayoutWords(Color.clear, offset:250, rotation:-5);
+        // Static, non-animated layout
+        LayoutWords(Color.clear, offset:250, rotation:-5);
 
-		// Animate into position with a new paragraph width
-		_layout.Animate(0.5f, () => LayoutWords(Color.black, offset:150, rotation:0), 
-			completeAction:() => {
-			
-				// Animate out again in completion callback after a 2 second pause
-				_layout.Animate(0.5f, 2.0f, () => 
-					LayoutWords(Color.clear, offset:50, rotation:+5)
-				);
-			}
-		);
+        // Animate into position with a new paragraph width
+        _layout.Animate(0.5f, () => LayoutWords(Color.black, offset:150, rotation:0), 
+            completeAction:() => {
+            
+                // Animate out again in completion callback after a 2 second pause
+                _layout.Animate(0.5f, 2.0f, () => 
+                    LayoutWords(Color.clear, offset:50, rotation:+5)
+                );
+            }
+        );
 
-		// Repeat the whole sequence again
-		_layout.After(6.0f, Animate);
-	}
+        // Repeat the whole sequence again
+        _layout.After(6.0f, Animate);
+    }
 
 For a few more examples, take a look in the full [Animation reference](#animation-reference).
 

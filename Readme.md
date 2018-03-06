@@ -16,19 +16,23 @@ For example:
     var layout = GetComponent<SLayout>();
     
     // Position RectTransform’s left edge at 50px from parent’s left edge
-    layout.x = 50.0f;
+    layout.x = 100.0f;
     
     // Set the height to 150px, extending from the bottom edge upwards
-    layout.height = 150.0f;
+    layout.height = 50.0f;
 
 However, using these properties consistently (instead of direct calls to the RectTransform) also allows you use SLayout's [animation methods](#animation-reference). Each property does a quick check in the setter to see whether an animation is currently being defined, and then automatically lerps/tweens to the given values if so:
 
     
     // Animate x to 100px, height to 50px, easing with a duration 0.5 seconds
     layout.Animate(0.5f, () => {
-        layout.x = 100.0f;
-        layout.height = 50.0f;
+        layout.x = 200.0f;
+        layout.height = 150.0f;
     });
+    
+Which gives the following result:
+
+![](https://github.com/inkle/slayout/blob/master/simple-anim.gif)
 
 There are a number of advantages to this technique. You don't have to learn a new syntax to an Animate method - you simply provide a duration and then in the animation method set the properties using the same code that you would use if you weren't animating. It also allows you to re-use code that you use to lay out views dynamically, even if the method does other things besides simply setting properties. You can even include loops in your animation code, positioning a set of views in one single `Animate` call.
 

@@ -15,17 +15,17 @@ For example:
 
     var layout = GetComponent<SLayout>();
     
-    // Position RectTransform’s left edge at 50px from parent’s left edge
+    // Position RectTransform’s left edge at 100px from parent’s left edge
     layout.x = 100.0f;
     
-    // Set the height to 150px, extending from the bottom edge upwards
+    // Set the height to 50px, extending from the bottom edge upwards
     layout.height = 50.0f;
 
 However, using these properties consistently (instead of direct calls to the RectTransform) also allows you use SLayout's [animation methods](#animation-reference). Each property does a quick check in the setter to see whether an animation is currently being defined, and then automatically lerps/tweens to the given values if so:
 
     
-    // Animate x to 100px, height to 50px, easing with a duration 0.5 seconds
-    layout.Animate(0.5f, () => {
+    // Animate x to 200px, height to 150px, easing with a duration 2.0 seconds
+    layout.Animate(2.0f, () => {
         layout.x = 200.0f;
         layout.height = 150.0f;
     });
